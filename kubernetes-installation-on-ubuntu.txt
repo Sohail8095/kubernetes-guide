@@ -1,0 +1,161 @@
+Kubernetes Installation in an Cloud, Ubuntu VM
+
+- The configuration must be 2 CPU and 2 GB RAM for master and can be basic (t2.micro) for slaves
+
+- Swap Memory should be disabled
+$ swapoff -a
+
+- Keep the hostname as a master or slave
+$ vi /etc/hostname
+
+- Should be a unique hostname of each VM
+You can achieve this by
+$ ifconfig -a
+and keeping that in an $ vi /etc/hosts
+
+Even you can keep fix it by coding as well in (optional)
+
+$ vi /etc/network/interfaces
+#write a code over there
+auto enp0s8
+iface enp0s8 inet static
+address {the private IP}
+
+- set an ssh connection b/w the master and slaves (not mandatory but will be good)
+$ ssh-keygen -t rsa
+$ cd .ssh/
+$ cat id_rsa.pub
+
+- paste the public key in salve VM inside
+$ vi authorized_key
+
+- Install open ssh server
+$ apt-get install openssh-server
+
+- Install Docker (container runtime) with the commands that will set the cgroup driver as well
+
+# Install Docker CE
+## Set up the repository:
+### Install packages to allow apt to use a repository over HTTPS
+apt-get update && apt-get install apt-transport-https ca-certificates curl software-properties-common
+
+### Add Docker’s official GPG key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+### Add Docker apt repository.
+add-apt-repository \
+  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) \
+  stable"
+
+## Install Docker CE.
+apt-get update && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu
+
+# Setup daemon.
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+mkdir -p /etc/systemd/system/docker.service.d
+
+# Restart docker.
+systemctl daemon-reload
+systemctl restart docker
+
+- Install Kubernetes and dependencies of kubernetes
+
+$ apt-get update && apt-get install -y apt-transport-https curl
+
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+$ cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+$ apt-get update
+
+$ apt-get install -y kubelet kubeadm kubectl
+
+=== Now commands only on master ====
+
+- To let node as a master and generate token
+
+$ kubeadm init
+(there will be a token generated that you can run in your nodes to become a slave of master)
+
+- To run kubeadm with pod network
+
+$ kubeadm init --pod-network-cidr=<Ip_of_podnetwork> --apiserver-advertise-address=<ip-address>
+(Calico pod network IP = 192.168.0.0/16)
+
+Actual command will be 
+$ kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=<ip-address>
+
+$ mkdir -p $HOME/.kube
+
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+- To deply a pod network (preferred calico)
+
+$ kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+
+- If you want to get kubernetes dashboard you have to bring dashboard pod before joining the node (This is must before joining the node)
+If not the dashboard will come on slave (OPTIONAL)
+
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
+
+- The dashboard will be available at:
+http://<IP_address>:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+then run
+$ kubectl proxy
+
+- To access on UI Dashboard
+
+-- You have to create a service account in CLI
+$ kubectl create serviceaccount dashboard -n default
+
+-- Add the cluster binding rules to your dashboard account
+
+$ kubectl create clusterrolebinding dashboard-admin -n default --clusterrole=cluster-admin --serviceaccount=default:dashboard
+
+-- Copy the secret token required for your dashboard login using the below command:
+
+$ kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+
+
+=== On Salve ====
+
+- To join node as a slave
+
+$ kubeadm join 172.31.47.236:6443 --token 2u73be.zg2tdvmwg7o1rs8i --discovery-token-ca-cert-hash sha256:aefd9d6e9d671da847c53364a08d6912c8ea8849acc2db6c5c8a2e744cf056d6
+(The above is an example you have to run what token has been generated in your master)
+
+
+
+===== Port number on master and slaves =====
+
+- On Master
+
+TCP	Inbound	6443*	Kubernetes API server	All
+TCP	Inbound	2379-2380	etcd server client API	kube-apiserver, etcd
+TCP	Inbound	10250	Kubelet API	Self, Control plane
+TCP	Inbound	10251	kube-scheduler	Self
+TCP	Inbound	10252	kube-controller-manager	Self
+
+(If want kubernetes dashboard the also allow 8001 port)
+TCP	Inbound	8001    kube-dashboard
+
+- On Slave
+
+TCP	Inbound	10250	Kubelet API	Self, Control plane
+TCP	Inbound	30000-32767	NodePort Services**	All
