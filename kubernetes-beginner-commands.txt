@@ -1,4 +1,4 @@
-#++++++++++ KUBERNETS FOR BEGINNER +++++++++++
+++++++++++ KUBERNETS FOR BEGINNER +++++++++++
 
 - To create a pod with the docker image
 $ kubectl run nginx --image=nginx
