@@ -1,0 +1,30 @@
+#++++++++++ KUBERNETS FOR BEGINNER +++++++++++
+
+- To create a pod with the docker image
+$ kubectl run nginx --image=nginx
+(--image=nginx  =  will go to the oublic docker hub repo and pull,run the image)
+( what you give after "kubectl run" will be a pod name)
+
+- To see the nodes
+$ kubectl get nodes
+
+- To see the pods
+$ kubectl get pods
+
+- To get pods of all name spaces
+$ kubectl get pods --all-namespaces
+
+- To list down the features of the pod
+$ kubectl describe pods
+
+- To get the IP and node of the pods run command with "-o" flag
+$ kubectl get pods -o wide
+
+===== YAML file of kubernetes =====
+
+- Top level fields of yaml file
+> apiVersion
+> kind
+> metadata
+> spec
+
