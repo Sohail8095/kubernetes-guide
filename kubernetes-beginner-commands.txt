@@ -28,3 +28,28 @@ $ kubectl get pods -o wide
 > metadata
 > spec
 
+- A basic yaml file example to create a pod
+apiVersion: v1
+kind: Pod
+metadata:
+        name: myapp-pod
+        labels:
+                app: myapp
+                type: front-end
+
+spec:
+        containers:
+                - name: nginx-container
+                  image: nginx
+
+- To create the pod with the yaml file
+$ kubectl create -f ${name_of_yaml_file}
+
+- To see the pods
+$ kubectl get pods
+
+- To see the details of the pod
+$ kubectl describe pod ${pod_name}
+
+- To check the yaml files online:
+http://www.yamllint.com/
