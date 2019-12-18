@@ -7,11 +7,13 @@ $ swapoff -a
 
 - Keep the hostname as a master or slave
 $ vi /etc/hostname
+(sed -i "s/.*/kmaster/g" /etc/hostname)
 
 - Should be a unique hostname of each VM
 You can achieve this by
 $ ifconfig -a
 and keeping that in an $ vi /etc/hosts
+(sed -i '2ikmaster 172.31.37.117' /etc/hosts)
 
 Even you can keep fix it by coding as well in (optional)
 
