@@ -51,5 +51,8 @@ $ kubectl get pods
 - To see the details of the pod
 $ kubectl describe pod ${pod_name}
 
+- To delete the pods
+$ kuectl delete pods ${pod_name}
+
 - To check the yaml files online:
 http://www.yamllint.com/
