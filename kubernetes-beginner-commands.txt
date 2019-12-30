@@ -56,3 +56,16 @@ $ kuectl delete pods ${pod_name}
 
 - To check the yaml files online:
 http://www.yamllint.com/
+
+-- Replication controller
+You can define a replication set in a yaml file and in the spec of replication section you can define complete property of pod
+And define how many number of replicas you want to that pod
+( replicas: 3)
+
+You can create pod with replicas with same command
+$ kubectl create -f ${file_name.yml}
+
+- To see the created replicas of pods run
+$ kubectl get pods
+
+-- Replica set
