@@ -3,8 +3,7 @@
 #Kubernetes installation on Ubuntu
 
 #keep the swap memory off
-if [ -f /proc/swaps ]
-then
+if [ -f /proc/swaps ]; then
 	swapoff -a
 else
 	echo "No swap found"
