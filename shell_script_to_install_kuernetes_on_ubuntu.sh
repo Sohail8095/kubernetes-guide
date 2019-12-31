@@ -10,8 +10,7 @@ else
 fi
 
 #Add the hostname to the server
-if [ -f /etc/hostname ]
-then
+if [ -f /etc/hostname ]; then
 	sed -i "s/.*/kmaster/g" /etc/hostname
 else
 	echo "No file found"
@@ -26,8 +25,7 @@ echo hostname: $HOST_NAME
 
 #Insert the IP address in hosts file
 
-if [ -f /etc/hosts ]
-then
+if [ -f /etc/hosts ]; then
 	sed -i "2ikmaster ${HOST_NAME}" /etc/hosts
 else
 	echo "No file found"
