@@ -36,7 +36,7 @@ fi
 #Create ssh connection between master and slave for better communication
 
 echo "Creating an ssh connection between master and slave"
-ssh-keygen -t rsa
+ssh-keygen -t rsa -f $HOME/.ssh/id_rsa
 
 #Send the public key from master to slave
 ssh-copy-id -i ~/.ssh/id_rsa.pub root@$1
