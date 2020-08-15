@@ -2,7 +2,7 @@
 
 #Kubernetes installation on Ubuntu
 # $1=ip addess of slave VM
-# $2 = ip of pod network (for calico = )
+# $2 = ip of pod network (for calico = 192.168.0.0/16 )
 
 
 #keep the swap memory off
