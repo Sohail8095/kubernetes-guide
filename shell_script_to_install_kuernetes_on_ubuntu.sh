@@ -1,6 +1,9 @@
 #!/bin/bash
 
 #Kubernetes installation on Ubuntu
+# $1=ip addess of slave VM
+# $2 = ip of pod network (for calico = )
+
 
 #keep the swap memory off
 if [ -f /proc/swaps ]; then
