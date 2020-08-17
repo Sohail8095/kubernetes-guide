@@ -112,7 +112,7 @@ apt-get install -y kubelet kubeadm kubectl
 
 echo "Initializing kubernetes as a master"
 
-kubeadm init --pod-network-cidr=$2 --apiserver-advertise-address=$HOST_NAME
+kubeadm init --pod-network-cidr=$2 --apiserver-advertise-address=$HOST_NAME >> master_key.log
 
 #Create Useful directories
 mkdir -p $HOME/.kube
