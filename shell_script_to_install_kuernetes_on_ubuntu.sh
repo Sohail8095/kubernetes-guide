@@ -8,6 +8,8 @@
 sudo su -
 cd ..
 
+apt-get update -y
+
 #keep the swap memory off
 if [ -f /proc/swaps ]; then
 	swapoff -a
