@@ -4,6 +4,9 @@
 # $1=ip addess of slave VM
 # $2 = ip of pod network (for calico = 192.168.0.0/16 )
 
+#Be as a root user
+sudo su -
+cd ..
 
 #keep the swap memory off
 if [ -f /proc/swaps ]; then
@@ -18,6 +21,15 @@ if [ -f /etc/hostname ]; then
 else
 	echo "No file found"
 fi
+
+if [ -d /u01/k8s ]; then 
+	echo "Directory is there"
+else
+	mkdir -p /u01/k8s
+fi
+
+export HOME=/u01/k8s
+echo $HOME
 
 #To add a hostname and IP address for better connection
 
