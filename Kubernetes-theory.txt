@@ -1,0 +1,1 @@
+This file is for explanation for overview of kubernetes and kubernetes architecture.
