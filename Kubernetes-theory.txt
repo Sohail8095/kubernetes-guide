@@ -1,1 +1,11 @@
 This file is for explanation for overview of kubernetes and kubernetes architecture.
+
+-> Kubernetes = container + orchestration
+-> Docker utilizes LXC containers.
+-> Docker container and underlying OS will only have one similarity - OS Kernal.
+-> Main purpose of docker is to containerize application, ship them and run them.
+-> Container boots up faster as compare to VM's
+-> Containers are running instances of images, that are isolated and have their own env.
+
+Container Orchestration: The whole process of automatically managing and deploying containers is known as Container Orchestration.
+
