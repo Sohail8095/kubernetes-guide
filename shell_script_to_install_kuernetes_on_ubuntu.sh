@@ -84,7 +84,8 @@ add-apt-repository \
   stable"
 
 ## Install Docker CE.
-apt-get update && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu -y
+#apt-get update && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu -y
+apt-get update && apt-get install docker-ce=19.03.15 -y
 
 # Setup daemon.
 mkdir /etc/docker
