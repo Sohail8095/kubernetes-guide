@@ -87,6 +87,7 @@ add-apt-repository \
 apt-get update && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu -y
 
 # Setup daemon.
+mkdir /etc/docker
 cat > /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -102,6 +103,7 @@ EOF
 mkdir -p /etc/systemd/system/docker.service.d
 
 #Reload daemon
+sudo systemctl enable docker
 systemctl daemon-reload
 
 #Restart docker
