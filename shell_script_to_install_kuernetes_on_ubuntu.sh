@@ -5,8 +5,8 @@
 # $2 = ip of pod network (for calico = 192.168.0.0/16 )
 
 #Be as a root user
-sudo su -
-cd ..
+#sudo su -
+#cd ..
 
 apt-get update -y
 
@@ -46,6 +46,12 @@ if [ -f /etc/hosts ]; then
 	sed -i "2ikmaster ${HOST_NAME}" /etc/hosts
 else
 	echo "No file found"
+fi
+
+if [ -d $HOME ]; then
+	mkdir $HOME/.ssh
+else
+	echo "Directory not found"
 fi
 
 #Create ssh connection between master and slave for better communication
