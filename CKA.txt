@@ -1,0 +1,8 @@
+# To get a yaml file of a image from kubectl command
+$ kubectl run redis --image=redis123 --dry-run=client -o yaml > pod.yaml
+
+# To create a pod from a defination file
+$ kubectl create -f pod-defination.yml   (or)    kubectl apply -f phpapache.yaml
+
+# To edit the runnning pod
+$ kubectl edit pod ${pod_name}
