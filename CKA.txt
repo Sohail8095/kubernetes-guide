@@ -1,8 +1,38 @@
-# To get a yaml file of a image from kubectl command
+1) To get a yaml file of a image from kubectl command
 $ kubectl run redis --image=redis123 --dry-run=client -o yaml > pod.yaml
 
-# To create a pod from a defination file
+2) To create a pod from a defination file
 $ kubectl create -f pod-defination.yml   (or)    kubectl apply -f phpapache.yaml
 
-# To edit the runnning pod
+3) To edit the runnning pod
 $ kubectl edit pod ${pod_name}
+
+4) To describe the details of pod
+$ kubectl describe pod ${pod_name}
+
+5) To get the image from image repository (below is a example from docker hub)
+$ kubectl run ngnix --image nginx
+
+6) To get the replication controller
+$ kubectl get replicationcontroller
+
+7) To get the replicaset
+$ kubectl get replicaset
+
+8) Difference b/w replication controller and replicaset is:
+**replicaset:
+apiVersion: apps/v1
+kind: ReplicaSet
+
+**replicationcontroller:
+apiVersion: v1
+kind: ReplicationController
+
+### And selector is mandatory in replica set ###
+
+9) Scale replica set for running pod:
+* Update the defination file and the run below:
+$ kubectl replace -f replicaset-defination.yaml
+
+* Update the replicas option by running the scale command
+$ kubectl scale --replicas=6 -f replicaset-defination.yaml  (or)   $ kubectl scale --replicas=7 replicaset myapp-replicaset
