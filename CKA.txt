@@ -36,3 +36,10 @@ $ kubectl replace -f replicaset-defination.yaml
 
 * Update the replicas option by running the scale command
 $ kubectl scale --replicas=6 -f replicaset-defination.yaml  (or)   $ kubectl scale --replicas=7 replicaset myapp-replicaset
+
+10) To get all the created objects at one place:
+$ kubectl get all
+
+11) To genarate a amnifest yaml file from kubectl command:
+$ kubectl create deployment --image=nginx nginx --replicas=4 --dry-run=client -o yaml > nginx-deployment.yaml
+
